@@ -2,7 +2,7 @@
 
 import type React from "react"
 
-import { useEffect, useState } from "react"
+import { Suspense, useEffect, useState } from "react"
 import Link from "next/link"
 import { useSearchParams } from "next/navigation"
 import { Button } from "@/components/ui/button"
@@ -13,7 +13,7 @@ import { useUpdateCheckoutDirection } from "@/hooks/useCheckoutDirection"
 import { useUpdateCheckoutShip } from "@/hooks/useCheckoutShip"
 import { useCheckoutValidateShip } from "@/hooks/useCheckoutValidateShip"
 
-export default function CheckoutPage() {
+function CheckoutPageContent() {
   const [step, setStep] = useState<"shipping" | "payment" | "confirmation">("shipping")
   const [formData, setFormData] = useState({
     fullName: "",
@@ -508,5 +508,13 @@ export default function CheckoutPage() {
         </div>
       )}
     </div>
+  )
+}
+
+export default function CheckoutPage() {
+  return (
+    <Suspense fallback={<div className="max-w-4xl mx-auto px-4 py-8">Cargando checkout...</div>}>
+      <CheckoutPageContent />
+    </Suspense>
   )
 }
