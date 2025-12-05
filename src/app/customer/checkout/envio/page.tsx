@@ -2,7 +2,7 @@
 
 import type React from "react"
 
-import { useEffect, useState } from "react"
+import { Suspense, useEffect, useState } from "react"
 import Link from "next/link"
 import { useRouter, useSearchParams } from "next/navigation"
 import { Button } from "@/components/ui/button"
@@ -13,7 +13,7 @@ import { useUpdateCheckoutDirection } from "@/hooks/useCheckoutDirection"
 import { useUpdateCheckoutShip } from "@/hooks/useCheckoutShip"
 import { useCheckoutValidateShip } from "@/hooks/useCheckoutValidateShip"
 
-export default function CheckoutEnvioPage() {
+function CheckoutEnvioContent() {
   const router = useRouter()
   const searchParams = useSearchParams()
   const idPedidoParam = searchParams.get("id_pedido")
@@ -377,5 +377,13 @@ export default function CheckoutEnvioPage() {
         </div>
       )}
     </div>
+  )
+}
+
+export default function CheckoutEnvioPage() {
+  return (
+    <Suspense fallback={<div className="max-w-4xl mx-auto px-4 py-8">Cargando envío...</div>}>
+      <CheckoutEnvioContent />
+    </Suspense>
   )
 }
