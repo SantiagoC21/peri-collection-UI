@@ -2,7 +2,7 @@
 
 import type React from "react"
 
-import { useMemo, useState } from "react"
+import { Suspense, useMemo, useState } from "react"
 import Image from "next/image"
 import Link from "next/link"
 import { useSearchParams } from "next/navigation"
@@ -56,7 +56,7 @@ enum Marcas {
   DinersClubInternational = "DINERS CLUB INTERNATIONAL",
 }
 
-export default function CheckoutPagoPage() {
+function CheckoutPagoContent() {
   const searchParams = useSearchParams()
   const idPedidoParam = searchParams.get("id_pedido")
   const idPedido = idPedidoParam ? Number(idPedidoParam) : null
@@ -580,5 +580,13 @@ export default function CheckoutPagoPage() {
         </div>
       )}
     </div>
+  )
+}
+
+export default function CheckoutPagoPage() {
+  return (
+    <Suspense fallback={<div className="max-w-4xl mx-auto px-4 py-8">Cargando pago...</div>}>
+      <CheckoutPagoContent />
+    </Suspense>
   )
 }
